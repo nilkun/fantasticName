@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <iostream> // For some error messages
 #include <string>
+#include <list>
 
 class FontAtlas {
 public:
@@ -49,13 +50,14 @@ public:
   SDL_Texture* fromAtlasToText(
     SDL_Renderer *renderer,
     std::string text,
-    FontAtlas *fontAtlas
-  );
-  void fromAtlasToTextbox(
-    SDL_Renderer *renderer,
-    std::string text,
     FontAtlas *fontAtlas,
-    int lettersPerRow
+    SDL_Color color = { 0, 255, 0, 0 }
+  );
+  SDL_Texture* fromAtlasToTextbox(
+    SDL_Renderer *renderer,
+    std::list<std::string> &strings,
+    FontAtlas *fontAtlas,
+    SDL_Color color = { 0, 255, 0, 0 }
   );
 };
 

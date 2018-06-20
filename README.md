@@ -1,12 +1,13 @@
 *************************************************
-*	Game Engine with a Fantastic Name	*
-*		2018 Nilkun	(alpha)		*
+Game Engine with a Fantastic Name v0.5.1
+2018 Nilkun	(alpha)
 *************************************************
 
-A game engine for SDL2. 
+A game engine for SDL2.
 
 It currently has functions to create textures from images, fonts, text, et.c.
 
+Some functions might not be documented here.
 
 
 The structure is as follows:
@@ -29,8 +30,8 @@ The structure is as follows:
           * Creates a font atlas
         fromAtlasToText()
           * Renders text to one line by using an atlas
-        void fromAtlasToTextbox()
-          * (not implemented) Renders text to multiple rows
+        fromAtlasToTextbox()
+          * Renders text to multiple rows from vector of strings
 
 /events
   * handles events

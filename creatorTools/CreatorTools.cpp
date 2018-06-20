@@ -167,15 +167,18 @@ SDL_Texture* TextureCreator::createFontAtlas(SDL_Renderer* renderer,
   return fontAtlas -> texture;
 }
 
-SDL_Texture* TextureCreator::fromAtlasToText(SDL_Renderer *renderer, std::string text, FontAtlas *fontAtlas)
+SDL_Texture* TextureCreator::fromAtlasToText(SDL_Renderer *renderer, std::string text, FontAtlas *fontAtlas, SDL_Color color)
 {
+  // ERROR CHECKING
+  if(!renderer) std::cout << "Error with renderer in AtlasToText";
+  if(!fontAtlas) std::cout << "Error with fontAtlas in AtlasToText";
   // Initialize temporary variables and textures
   SDL_Texture* processing;
   SDL_Texture* temp;
   SDL_Rect letterPosition = { 0, 0, 0, fontAtlas -> fontMap[33].h };
   int textureWidth = 100;
   // Set the color of the font
-  SDL_SetTextureColorMod(fontAtlas -> texture, 0, 255, 0);
+  SDL_SetTextureColorMod(fontAtlas -> texture, color.r, color.g, color.b);
 
   // Instantiation
   processing = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, textureWidth, letterPosition.h);
@@ -207,7 +210,63 @@ SDL_Texture* TextureCreator::fromAtlasToText(SDL_Renderer *renderer, std::string
   return returnTexture;
 }
 
-void TextureCreator::fromAtlasToTextbox(SDL_Renderer *renderer, std::string text, FontAtlas *fontAtlas, int lettersPerRow)
+SDL_Texture* TextureCreator::fromAtlasToTextbox(
+  SDL_Renderer *renderer,
+  std::list<std::string> &strings,
+  FontAtlas *fontAtlas,
+  SDL_Color color
+  )
 {
+  // ERROR CHECKING
+  if(!renderer) std::cout << "Error with renderer in AtlasToTextbox";
+  if(!fontAtlas) std::cout << "Error with fontAtlas in AtlasToTextbox";
+  // Initialize temporary variables and textures
+  SDL_Texture* processing;
+  SDL_Texture* temp;
+  SDL_Rect letterPosition = { 0, 0, 0, fontAtlas -> fontMap[33].h };
+  int textureWidth = 100;
+  int padding = 2;
+  int textureHeight = strings.size() * letterPosition.h + (strings.size() - 1) * padding;
+  int nextLine = letterPosition.h + padding;
+  int maxWidth = 0;
 
+  // Set the color of the font
+  SDL_SetTextureColorMod(fontAtlas -> texture, color.r, color.g, color.b);
+  // Instantiation
+  processing = SDL_CreateTexture(renderer,
+    SDL_PIXELFORMAT_RGBA8888,
+    SDL_TEXTUREACCESS_TARGET,
+    textureWidth,
+    textureHeight);
+  SDL_SetRenderTarget(renderer, processing);
+  for(auto text : strings) {
+    for(char& c : text) {
+      letterPosition.w = fontAtlas->fontMap[(int) c].w;
+      if((letterPosition.w + letterPosition.x) > maxWidth) maxWidth = letterPosition.w + letterPosition.x;
+      // Resize if necessary
+      if(textureWidth < letterPosition.w+letterPosition.x) // While oob
+      {
+        SDL_Rect targetTexture = { 0, 0, textureWidth, textureHeight }; // target location of temp texture
+        while(textureWidth < letterPosition.w+letterPosition.x) textureWidth *= 2; // In the unlikely case that the letters are bigger than the texture!
+        temp = processing;
+        processing = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, textureWidth, textureHeight);
+        SDL_SetRenderTarget(renderer, processing);
+        SDL_RenderCopy(renderer, temp, NULL, &targetTexture);
+        SDL_DestroyTexture(temp);
+      }
+      SDL_RenderCopy(renderer, fontAtlas->texture, &fontAtlas->fontMap[(int) c], &letterPosition);
+      // std::cout << "Processing '" << text << std::endl;
+      letterPosition.x += letterPosition.w;
+    }
+    letterPosition.y += nextLine;
+    letterPosition.x = 0;
+  }
+  SDL_Texture* returnTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, maxWidth, textureHeight);
+  SDL_SetRenderTarget(renderer, returnTexture);
+  // Recycle letterPosition for placing in texture
+  letterPosition = { 0, 0, maxWidth, textureHeight };
+  SDL_RenderCopy(renderer, processing, &letterPosition, &letterPosition);
+  SDL_DestroyTexture(processing);
+  SDL_SetRenderTarget(renderer, NULL);
+  return returnTexture;
 }
