@@ -1,3 +1,10 @@
+/***********************************
+  GAME ENGINE WITH A FANTASTIC NAME
+  ---------------------------------
+  by nilkun
+
+ **********************************/
+
 #ifndef __CREATORTOOLS_H__
 #define __CREATORTOOLS_H__
 
@@ -59,6 +66,7 @@ public:
     FontAtlas *fontAtlas,
     SDL_Color color = { 0, 255, 0, 0 }
   );
+  FontAtlas create8bitAtlas(SDL_Renderer *renderer);
 };
 
 #endif

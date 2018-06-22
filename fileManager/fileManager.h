@@ -1,4 +1,10 @@
-//Open file for reading in binary
+/***********************************
+  GAME ENGINE WITH A FANTASTIC NAME
+  ---------------------------------
+  by nilkun
+
+ **********************************/
+
 #ifndef __FILEMANAGER_H__
 #define __FILEMANAGER_H__
 

@@ -1,3 +1,10 @@
+/***********************************
+  GAME ENGINE WITH A FANTASTIC NAME
+  ---------------------------------
+  by nilkun
+
+ **********************************/
+
 #ifndef __VIEWPORT_H__
 #define __VIEWPORT_H__
 

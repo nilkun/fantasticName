@@ -270,3 +270,16 @@ SDL_Texture* TextureCreator::fromAtlasToTextbox(
   SDL_SetRenderTarget(renderer, NULL);
   return returnTexture;
 }
+
+FontAtlas TextureCreator::create8bitAtlas(SDL_Renderer *renderer)
+{
+  FontAtlas bitfont;
+  bitfont.texture = fromImage(renderer, "resources/alphabet.png");
+  SDL_Rect destination = { 0, 0, 7, 9 };
+  for(int i = 32; i <= 128; i++) {
+    /* set location data in atlas */
+    bitfont.fontMap[i] = destination;
+    destination.x += 6;
+  }
+  return bitfont;
+}

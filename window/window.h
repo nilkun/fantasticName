@@ -1,3 +1,10 @@
+/***********************************
+  GAME ENGINE WITH A FANTASTIC NAME
+  ---------------------------------
+  by nilkun
+
+ **********************************/
+ 
 #ifndef __WINDOW_H__
 #define __WINDOW_H__
 
@@ -9,12 +16,13 @@
 class Screen {
 
 private:
-  int width;
-  int height;
-
   SDL_Window *m_window;
   SDL_Renderer *m_renderer;
   const char* m_title;
+  int width;
+  int height;
+
+
   std::vector<Viewport> viewports;
 
 /* initialization.cpp */
