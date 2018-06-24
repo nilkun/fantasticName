@@ -67,6 +67,12 @@ public:
     SDL_Color color = { 0, 255, 0, 0 }
   );
   FontAtlas create8bitAtlas(SDL_Renderer *renderer);
+  void showMessage(SDL_Renderer *renderer,
+    std::string message,
+    FontAtlas *bitfont,
+    int yPos,
+    int xPos
+  );
 };
 
 #endif

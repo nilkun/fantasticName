@@ -283,3 +283,15 @@ FontAtlas TextureCreator::create8bitAtlas(SDL_Renderer *renderer)
   }
   return bitfont;
 }
+
+void TextureCreator:: showMessage(SDL_Renderer *renderer, std::string message, FontAtlas *bitfont, int yPos, int xPos) {
+  SDL_Texture *messageTexture = nullptr;
+  messageTexture = fromAtlasToText(renderer, message.c_str(), bitfont, color);
+  int texW = 0;
+  int texH = 0;
+  SDL_QueryTexture(messageTexture, NULL, NULL, &texW, &texH);
+  if(xPos == -1) xPos = (1024 - texW)/2; //centered
+  SDL_Rect messageLocation = { xPos, yPos, texW, texH };
+  SDL_RenderCopy(renderer, messageTexture, NULL, &messageLocation);
+  SDL_DestroyTexture(messageTexture);
+}
