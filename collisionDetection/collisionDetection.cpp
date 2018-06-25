@@ -5,11 +5,11 @@ CollisionDetection::CollisionDetection() {
 
 }
 
-bool CollisionDetection::pointVSCircle(float x1, float y1, float radius, float x2, float y2) {
-  int x = (x1 - x2)*(x1 - x2);
-  int y = (y1 - y2)*(y1 - y2);
-  int distance = x + y;
-  int collisionRadius = radius * radius;
+bool CollisionDetection::pointVSCircle(float x1, float y1, float x2, float y2, float radius) {
+  float x = (x1 - x2)*(x1 - x2);
+  float y = (y1 - y2)*(y1 - y2);
+  float distance = x + y;
+  float collisionRadius = radius * radius;
   if(collisionRadius >= distance) return true;
   else return false;
 }
